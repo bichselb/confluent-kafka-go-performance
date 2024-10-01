@@ -6,7 +6,7 @@ Install docker and run the experiment with `./run.sh`.
 
 ## Code
 
-The code pieces of this repo are:
+The core pieces of this repo are:
 
 - The [producer](go-scripts/producer.go)
 - The [consumer](go-scripts/consumer.go)
