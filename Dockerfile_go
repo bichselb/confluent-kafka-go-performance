@@ -1,0 +1,10 @@
+FROM golang:1.23
+
+WORKDIR /app
+COPY ./go-scripts/ .
+
+RUN go mod download
+RUN go build -o producer producer.go
+RUN go build -o consumer consumer.go
+
+CMD ["./run-go.sh"]
