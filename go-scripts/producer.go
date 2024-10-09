@@ -11,8 +11,13 @@ import (
 func main() {
     start := time.Now()
 
+    // https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md
     p, err := kafka.NewProducer(&kafka.ConfigMap{
         "bootstrap.servers": "kafka:29092",
+        // avoid message drops
+        "queue.buffering.max.messages": 0,  // Maximum number of messages allowed on the producer queue, 0 disables this limit
+        // detailed logging
+        // "debug": "msg",
     })
     if err != nil {
         panic(err)

@@ -25,9 +25,9 @@ The core pieces of this repo are:
 
 On my machine, I get:
 
-| Service  | Throughput          |
-| -------- | ------------------- |
-| Producer | 978209 messages/sec |
-| Consumer | 119131 messages/sec |
+| Service  | Throughput           |
+| -------- | -------------------- |
+| Producer | 1011236 messages/sec |
+| Consumer |  803654 messages/sec |
 
 For a complete log on my machine, see [results.log](results.log).

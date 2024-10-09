@@ -10,10 +10,16 @@ import (
 func main() {
     start := time.Now()
 
+    // https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": "kafka:29092",
-		"group.id":          "myGroup",
+		"group.id": "myGroup",
 		"auto.offset.reset": "earliest",
+        // this makes a significant difference for consumption speed
+        "fetch.message.max.bytes": 1_000_000_000, // 1 GB (largest allowed)
+        // this makes a minor difference for the consumption speed
+        "fetch.max.bytes": 1_000_000_000,  // 1 GB (~2 GB is largest allowed, 50 MB is default)
+        "queued.max.messages.kbytes": 1_000_000, // 1 GB (~2 GB is largest allowed, ~65 MB is default)
 	})
 
 	if err != nil {
