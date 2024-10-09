@@ -1,5 +1,10 @@
 # Confluent Kafka Go: Simple Performance Measurement
 
+This repository performs a simple performance measurement of the [confluent
+kafka
+go](https://docs.confluent.io/platform/current/clients/confluent-kafka-go/index.html)
+library.
+
 ## Run
 
 Install docker and run the experiment with:
@@ -18,7 +23,11 @@ The core pieces of this repo are:
 
 ## Results
 
-On my machine, I send out 30 million messages within ~30 seconds, but it takes
-me around 240 seconds to receive all 30 million messages.
+On my machine, I get:
+
+| Service  | Throughput          |
+| -------- | ------------------- |
+| Producer | 978209 messages/sec |
+| Consumer | 119131 messages/sec |
 
 For a complete log on my machine, see [results.log](results.log).
