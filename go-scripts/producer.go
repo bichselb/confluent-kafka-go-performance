@@ -51,15 +51,20 @@ func main() {
         expected := time.Duration(i+1) * time.Second
 
         if expected > elapsed {
-            time.Sleep(expected - elapsed)
+            sleepDuration := expected - elapsed
+            fmt.Printf("Sleeping for %d ns to throttle the send speed...\n", sleepDuration)
+            time.Sleep(sleepDuration)
         }
 
         totalSent := (i+1)*messagesPerBatch
-        fmt.Printf("Sent out %d messages each within %.2f seconds (delivered %d%%)\n", totalSent, elapsed.Seconds(), 100 * messagesDelivered / totalSent)
+        perSecond := int(float64(messagesDelivered) / elapsed.Seconds())
+        fmt.Printf("Sent out a total of %d messages within %.2f seconds (delivered %d%%, average %d messages/sec)\n", totalSent, elapsed.Seconds(), 100 * messagesDelivered / totalSent, perSecond)
     }
 
-    fmt.Printf("Waiting for message deliverables...\n")
+    fmt.Printf("Waiting for message delivery (flush)...\n")
     beforeFlush := time.Now()
-    p.Flush(15_000)
-    fmt.Printf("Collected all message deliverables after %.2f seconds, delivering a total of %d messages.\n", time.Since(beforeFlush).Seconds(), messagesDelivered)
+    outstanding := p.Flush(15_000)
+    p.Close()
+
+    fmt.Printf("Collected delivery report of %d messages after %.2f seconds (delivered %d%%, %d outstanding).\n", messagesDelivered, time.Since(beforeFlush).Seconds(), 100 * messagesDelivered / (messagesPerBatch * nBatches), outstanding)
 }

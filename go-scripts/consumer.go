@@ -20,7 +20,7 @@ func main() {
 		panic(err)
 	}
 
-	err = c.SubscribeTopics([]string{"myTopic", "^aRegex.*[Tt]opic"}, nil)
+	err = c.Subscribe("myTopic", nil)
 
 	if err != nil {
 		panic(err)
@@ -30,18 +30,20 @@ func main() {
     nReceived := 0
 
     for {
-        msg, err := c.ReadMessage(time.Second)
+        msg, err := c.ReadMessage(10 * time.Second)
         if err == nil {
             nReceived++
-        } else if !err.(kafka.Error).IsTimeout() {
-            // Timeout is not considered an error because it is raised by
-            // ReadMessage in absence of messages.
+        } else if err.(kafka.Error).IsTimeout() {
+            fmt.Printf("Timeout after %d messages\n", nReceived)
+            break
+        } else {
             fmt.Printf("Consumer error: %v (%v)\n", err, msg)
         }
 
         if (nReceived % messagesPerBatch == 0) && (nReceived > 0) {
             elapsed := time.Since(start)
-            fmt.Printf("Received %d messages within %.2f seconds\n", nReceived, elapsed.Seconds())
+            perSecond := int(float64(nReceived) / elapsed.Seconds())
+            fmt.Printf("Received %d messages within %.2f seconds (average %d messages/sec)\n", nReceived, elapsed.Seconds(), perSecond)
         }
     }
 

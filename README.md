@@ -2,7 +2,11 @@
 
 ## Run
 
-Install docker and run the experiment with `./run.sh`.
+Install docker and run the experiment with:
+
+```bash
+./run.sh 2>&1 | tee results.log
+```
 
 ## Code
 
