@@ -3,7 +3,7 @@ package main
 // this code is closely following https://github.com/confluentinc/confluent-kafka-go/blob/master/examples/protobuf_producer_example/protobuf_producer_example.go, except for enabling CacheSchemas
 
 import (
-    "fmt"
+	"fmt"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/schemaregistry"
@@ -11,7 +11,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/schemaregistry/serde/protobuf"
 	"google.golang.org/protobuf/proto"
 
-    pb "go_example/protos"
+	pb "go_example/protos"
 )
 
 func serializeWithSchemaregistry(nMessages int) {
@@ -38,7 +38,7 @@ func serializeWithSchemaregistry(nMessages int) {
 
 	start := time.Now()
 	topic := "mytopic"
-    for i := 0; i < nMessages; i++ {
+	for i := 0; i < nMessages; i++ {
 		message := pb.MyMessage{
 			A: int32(i),
 			B: int32(i),
@@ -51,27 +51,27 @@ func serializeWithSchemaregistry(nMessages int) {
 		}
 		// Pseudo-use of payload to prevent compiler optimizations
 		_ = copy(payload, payload)
-    }
+	}
 	fmt.Printf("Protobuf+schemaregistry: Serialized %d messages in %v\n", nMessages, time.Since(start))
 }
 
 func serializeWithProtobuf(nMessages int) {
 	start := time.Now()
 
-    for i := 0; i < nMessages; i++ {
+	for i := 0; i < nMessages; i++ {
 		message := pb.MyMessage{
 			A: int32(i),
 			B: int32(i),
 		}
 
-        payload, err := proto.Marshal(&message)
-        if err != nil {
-            fmt.Println("Error serializing protobuf message:", err)
-            return
-        }
+		payload, err := proto.Marshal(&message)
+		if err != nil {
+			fmt.Println("Error serializing protobuf message:", err)
+			return
+		}
 		// Pseudo-use of payload to prevent compiler optimizations
 		_ = copy(payload, payload)
-    }
+	}
 
 	fmt.Printf("Pure protobuf: Serialized %d messages in %v\n", nMessages, time.Since(start))
 }
