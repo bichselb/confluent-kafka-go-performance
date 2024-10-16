@@ -1,9 +1,9 @@
-# Confluent Kafka Go: Simple Performance Measurement
+# Confluent Kafka Go: Measuring Serialization Performance
 
-This repository performs a simple performance measurement of the [confluent
-kafka
+This code measures the performance of the [confluent kafka
 go](https://docs.confluent.io/platform/current/clients/confluent-kafka-go/index.html)
-library.
+library when serializing using protobuf and the schema registry, as showcased
+[here](https://github.com/confluentinc/confluent-kafka-go/blob/master/examples/protobuf_producer_example/protobuf_producer_example.go).
 
 ## Run
 
@@ -13,21 +13,13 @@ Install docker and run the experiment with:
 ./run.sh 2>&1 | tee results.log
 ```
 
-## Code
-
-The core pieces of this repo are:
-
-- The [producer](go-scripts/producer.go)
-- The [consumer](go-scripts/consumer.go)
-- The [docker compose file](docker-compose.yml) specifying kafka
-
 ## Results
 
 On my machine, I get:
 
-| Service  | Throughput           |
-| -------- | -------------------- |
-| Producer | 1011236 messages/sec |
-| Consumer |  803654 messages/sec |
+| Test                     | Time to serialize 1 million messages |
+| ------------------------ | ------------------------------------ |
+| Protobuf+schema registry | 1.603282821s                         |
+| Pure protobuf (baseline) | 99.182533ms                          |
 
 For a complete log on my machine, see [results.log](results.log).

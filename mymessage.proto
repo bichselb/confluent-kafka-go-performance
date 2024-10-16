@@ -1,0 +1,9 @@
+syntax = "proto3";
+package protos;
+
+option go_package = "go_example/protos;protos";
+
+message MyMessage {
+  int32 A = 1;
+  int32 B = 2;
+}

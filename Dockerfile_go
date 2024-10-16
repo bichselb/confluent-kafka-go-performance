@@ -1,10 +1,10 @@
 FROM golang:1.23
 
-WORKDIR /app
-COPY ./go-scripts/ .
+RUN apt-get update && apt-get install -y \
+    protobuf-compiler \
+    graphviz \
+    && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
+    && apt-get clean
 
-RUN go mod download
-RUN go build -o producer producer.go
-RUN go build -o consumer consumer.go
-
-CMD ["./run-go.sh"]
+WORKDIR /host
